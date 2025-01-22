@@ -15,6 +15,7 @@ RUN apt-get update -y \
         && apt-get install -y git \
         && git clone https://github.com/CDPS-ETSIT/practica_creativa2.git \
         && cd practica_creativa2/bookinfo/src/productpage/ \
+        && sed -i s/^requests==.*/requests/ requirements.txt \
         && pip3 install -r requirements.txt
 
 # Cambiar el título de la app y lanzar app en el puerto 9080
