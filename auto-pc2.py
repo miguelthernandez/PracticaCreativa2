@@ -1,7 +1,3 @@
-# GRUPO 27
-# Jaime Gallego Chillón
-# Marta Volpini López
-
 import logging, sys, os
 from lib_mv import mv_pesada, mv_docker, mv_docker_compose, mv_kubernetes, destroy_cluster, config_cluster, docker_destroy, info_cluster
 

@@ -4,7 +4,7 @@ FROM python:3.7.7-slim
 EXPOSE 9080
 
 #Indicar la variable de entorno GROUP_NUMBER
-ENV GROUP_NUMBER=UNDEFINED
+ENV GROUP_NUMBER=15
 
 # Cambiar directorio al de home
 WORKDIR /home

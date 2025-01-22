@@ -1,8 +1,6 @@
 #!/usr/bin/python3
 
-# GRUPO 27
-# Jaime Gallego Chillón
-# Marta Volpini López
+
 
 import logging, subprocess, os
 
@@ -22,8 +20,8 @@ def mv_pesada (puerto):
 # Despliegue de la aplicación mediante Docker
 def mv_docker ():
   log.debug("mv_docker ")
-  subprocess.call(['sudo', 'docker', 'build', '-t', 'g27/product-page-mono', '.'])
-  subprocess.call(['sudo', 'docker', 'run', '--name', 'g27-product-page-mono', '-p', '9080:9080', '-e', 'GROUP_NUMBER=27', 'g27/product-page-mono'])
+  subprocess.call(['sudo', 'docker', 'build', '-t', 'g15/product-page-mono', '.'])
+  subprocess.call(['sudo', 'docker', 'run', '--name', 'g15-product-page-mono', '-p', '9080:9080', '-e', 'GROUP_NUMBER=15', 'g15/product-page-mono'])
 
 # Eliminar todas las imágenes y contenedores Docker
 def docker_destroy():
@@ -40,22 +38,22 @@ def mv_docker_compose (version, ratings, star):
   subprocess.call(['git', 'clone', 'https://github.com/CDPS-ETSIT/practica_creativa2.git', '/practica_creativa2'])
   # Crear la imagen de ProductPage
   log.debug("CONSTRUIR PRODUCT_PAGE")
-  subprocess.call(['sudo', 'docker', 'build', '-t', 'g27/product-page:latest', './ProductPage'])
-  subprocess.call(['sudo', 'docker', 'run', '--name', 'g27-product-page', '-p', '9080', '-d', '-it', 'g27/product-page:latest'])
+  subprocess.call(['sudo', 'docker', 'build', '-t', 'g15/product-page:latest', './ProductPage'])
+  subprocess.call(['sudo', 'docker', 'run', '--name', 'g15-product-page', '-p', '9080', '-d', '-it', 'g15/product-page:latest'])
   # Crear la imagen de Details
   log.debug("CONSTRUIR DETAILS")
-  subprocess.call(['sudo', 'docker', 'build', '-t', 'g27/details:latest', './Details'])
-  subprocess.call(['sudo', 'docker', 'run', '--name', 'g27-details', '-p', '9080', '-d', '-it', 'g27/details:latest'])
+  subprocess.call(['sudo', 'docker', 'build', '-t', 'g15/details:latest', './Details'])
+  subprocess.call(['sudo', 'docker', 'run', '--name', 'g15-details', '-p', '9080', '-d', '-it', 'g15/details:latest'])
   # Crear la imagen de Ratings
   log.debug("CONSTRUIR RATINGS")
-  subprocess.call(['sudo', 'docker', 'build', '-t', 'g27/ratings:latest', './Ratings'])
-  subprocess.call(['sudo', 'docker', 'run', '--name', 'g27-ratings', '-p', '9080', '-d', '-it', 'g27/ratings:latest'])
+  subprocess.call(['sudo', 'docker', 'build', '-t', 'g15/ratings:latest', './Ratings'])
+  subprocess.call(['sudo', 'docker', 'run', '--name', 'g15-ratings', '-p', '9080', '-d', '-it', 'g15/ratings:latest'])
   # Crear la imagen de Reviews
   log.debug("CONSTRUIR REVIEWS")
   os.chdir('practica_creativa2/bookinfo/src/reviews')
   subprocess.call(['sudo', 'docker', 'run', '--rm', '-u', 'root', '-v', '/home/gradle/project', '-w', '/home/gradle/project', 'gradle:4.8.1', 'gradle', 'clean', 'build'])
-  subprocess.call(['sudo', 'docker', 'build', '-t', 'g27/reviews:latest', './reviews-wlpcfg'])
-  subprocess.call(['sudo', 'docker', 'run', '--name', 'g27-reviews', '-p', '9080', '-d', '-it', 'g27/reviews:latest'])
+  subprocess.call(['sudo', 'docker', 'build', '-t', 'g15/reviews:latest', './reviews-wlpcfg'])
+  subprocess.call(['sudo', 'docker', 'run', '--name', 'g15-reviews', '-p', '9080', '-d', '-it', 'g15/reviews:latest'])
   
   # Cambiar al directorio raíz
   os.chdir(raiz)
@@ -64,25 +62,25 @@ def mv_docker_compose (version, ratings, star):
   contenido_docker_compose = f"""
       version: '3'
       services:
-        g27-productpage:
-          image: "g27/product-page:latest"
+        g15-productpage:
+          image: "g15/product-page:latest"
           ports:
             - 9080:9080
           environment:
-            - GROUP_NUMBER=27
-        g27-details:
-          image: "g27/details:latest"
+            - GROUP_NUMBER=15
+        g15-details:
+          image: "g15/details:latest"
           environment:
             - SERVICE_VERSION=v1
             - ENABLE_EXTERNAL_BOOK_SERVICE=true
-        g27-reviews:
-          image: "g27/reviews:latest"
+        g15-reviews:
+          image: "g15/reviews:latest"
           environment:
             - SERVICE_VERSION={version}
             - ENABLE_RATINGS={ratings}
             - STAR_COLOR={star}
-        g27-ratings:
-          image: "g27/ratings:latest"
+        g15-ratings:
+          image: "g15/ratings:latest"
       """
   # Escribir el contenido en el fichero docker-compose.yaml
   with open('docker-compose.yaml', 'w') as file:
