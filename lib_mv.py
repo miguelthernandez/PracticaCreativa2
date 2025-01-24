@@ -20,8 +20,8 @@ def mv_pesada (puerto):
 # Despliegue de la aplicación mediante Docker
 def mv_docker ():
   log.debug("mv_docker ")
-  subprocess.call(['sudo', 'docker', 'build', '-t', 'g15/product-page-mono', '.'])
-  subprocess.call(['sudo', 'docker', 'run', '--name', 'g15-product-page-mono', '-p', '9080:9080', '-e', 'GROUP_NUMBER=15', 'g15/product-page-mono'])
+  subprocess.call(['sudo', 'docker', 'build', '-t', 'product-page/g15', '.'])
+  subprocess.call(['sudo', 'docker', 'run', '--name', 'product-page-g15', '-p', '9080:9080', '-e', 'GROUP_NUMBER=15', '-d', 'product-page/g15'])
 
 # Eliminar todas las imágenes y contenedores Docker
 def docker_destroy():
