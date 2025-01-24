@@ -21,7 +21,7 @@ def mv_pesada (puerto):
 def mv_docker ():
   log.debug("mv_docker ")
   subprocess.call(['sudo', 'docker', 'build', '-t', 'product-page/g15', '.'])
-  subprocess.call(['sudo', 'docker', 'run', '--name', 'product-page-g15', '-p', '9080:9080', '-e', 'GROUP_NUMBER=15', '-d', 'product-page/g15'])
+  subprocess.call(['sudo', 'docker', 'run', '--name', 'product-page-g15', '-p', '5080:5080', '-e', 'GROUP_NUMBER=15', '-d', 'product-page/g15'])
 
 # Eliminar todas las imágenes y contenedores Docker
 def docker_destroy():
