@@ -6,8 +6,9 @@ RUN apt-get update && \
     apt-get install -y git && \
     git clone https://github.com/CDPS-ETSIT/practica_creativa2.git && \
     apt-get update && \
-    apt-get install -y python3-pip && \
-    sed -i s/^requests==.*/requests/ practica_creativa2/bookinfo/src/productpage/requirements.txt && \
+    apt-get install -y python3-pip
+    
+RUN sed -i s/^requests==.*/requests/ practica_creativa2/bookinfo/src/productpage/requirements.txt && \
     pip install -r practica_creativa2/bookinfo/src/productpage/requirements.txt
 
 # Expone el puerto 9080 en el contenedor
@@ -15,7 +16,7 @@ EXPOSE 5080
 
 # Pasa la variable de entorno GROUP_NUMBER al contenedor
 ARG GROUP_NUM
-ENV GROUP_NUM=15
+ENV GROUP_NUM 15
 
 # Cambiamos el título y ejecutamos la aplicación con el script productpage_monolith.py
 CMD sed -i "s/{{ product.title }}/{{ product.title }} ${GROUP_NUM}/g" practica_creativa2/bookinfo/src/productpage/templates/productpage.html && \
