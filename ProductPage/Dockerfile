@@ -1,26 +1,23 @@
+# Usa una imagen base ligera de Python
 FROM python:3.7.7-slim
 
-# Indicar el puerto accesible
+# Preparamos el entorno (Instalaciones)
+RUN apt-get update && \
+    apt-get install -y git && \
+    git clone https://github.com/CDPS-ETSIT/practica_creativa2.git && \
+    apt-get update && \
+    apt-get install -y python3-pip
+
+# Instalamos las dependencias de requirements.txt
+RUN pip install -r practica_creativa2/bookinfo/src/productpage/requirements.txt
+
+# Expone el puerto 9080 en el contenedor
 EXPOSE 5080
 
-#Indicar la variable de entorno GROUP_NUMBER
-ENV GROUP_NUMBER=15
+# Pasa la variable de entorno GROUP_NUMBER al contenedor
+ARG GROUP_NUMBER
+ENV GROUP_NUMBER 10
 
-# Cambiar directorio al de home
-#WORKDIR /home
-
-# Ejecutar comandos de instalación
-RUN apt-get update -y \
-        && apt-get install -y python3-pip \
-        && apt-get install -y git \
-        && git clone https://github.com/CDPS-ETSIT/practica_creativa2.git \
-        && cd practica_creativa2/bookinfo/src/productpage/ \
-        && sed -i s/^requests==.*/requests/ requirements.txt \
-        && pip3 install -r requirements.txt
-
-# Cambiar el título de la app y lanzar app en el puerto 5080
+# Cambiamos el título y ejecutamos la aplicación con el script productpage_monolith.py
 CMD sed -i "s/{{ product.title }}/{{ product.title }} ${GROUP_NUMBER}/g" practica_creativa2/bookinfo/src/productpage/templates/productpage.html && \
-    python3 practica_creativa2/bookinfo/src/productpage/productpage_monolith.py 5080
-
-# Indicar que se ha instalado correctamente
-RUN echo "La imagen Docker de PRODUCT PAGE se ha instalado correctamente"
+    python3 practica_creativa2/bookinfo/src/productpage/productpage_monolith.py 5090
