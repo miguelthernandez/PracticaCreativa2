@@ -1,0 +1,49 @@
+version: '3'
+services:
+  productpage:
+    build:
+      context: .
+      dockerfile: Dockerfile_productpage
+    environment:
+      GROUP_NUMBER: 15
+    ports:
+      - "9080:9080"
+    container_name: "productpage-15"
+    image: "productpage/15"
+
+  details:
+    build:
+      context: .
+      dockerfile: Dockerfile_details
+    environment:
+      SERVICE_VERSION: v1
+      ENABLE_EXTERNAL_BOOK_SERVICE: "true"
+    ports:
+      - "9081:9080"  # Cambiado el puerto local para evitar conflictos
+    container_name: "details-15"
+    image: "details/15"
+
+  reviews:
+    build:
+      context: practica_creativa2/bookinfo/src/reviews/reviews-wlpcfg   # Usamos el que ya esta creado
+      dockerfile: Dockerfile
+    environment:
+      SERVICE_VERSION: v3
+      ENABLE_RATINGS: "true"
+      STAR_COLOR: red
+    ports:
+      - "9082:9080"  # Cambiado el puerto local para evitar conflictos
+    container_name: "reviews-15"
+    image: "reviews/15"
+
+  ratings:
+    build:
+      context: .
+      dockerfile: Dockerfile_ratings
+    environment:
+      SERVICE_VERSION: v1
+    ports:
+      - "9083:9080"  # Cambiado el puerto local para evitar conflictos
+    container_name: "ratings-15"
+    image: "ratings/15"
+
