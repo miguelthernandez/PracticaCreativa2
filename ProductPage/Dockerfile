@@ -13,7 +13,7 @@ RUN sed -i s/^requests==.*/requests/ practica_creativa2/bookinfo/src/productpage
     pip install -r practica_creativa2/bookinfo/src/productpage/requirements.txt
 
 # Expone el puerto 9080 en el contenedor
-EXPOSE 5080
+EXPOSE 9080
 
 # Pasa la variable de entorno GROUP_NUMBER al contenedor
 ARG GROUP_NUMBER
@@ -21,4 +21,4 @@ ENV GROUP_NUMBER 15
 
 # Cambiamos el título y ejecutamos la aplicación con el script productpage_monolith.py
 CMD sed -i "s/{{ product.title }}/{{ product.title }} ${GROUP_NUMBER}/g" practica_creativa2/bookinfo/src/productpage/templates/productpage.html && \
-    python3 practica_creativa2/bookinfo/src/productpage/productpage_monolith.py 5080
+    python3 practica_creativa2/bookinfo/src/productpage/productpage_monolith.py 9080
