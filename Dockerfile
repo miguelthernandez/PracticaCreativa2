@@ -21,4 +21,4 @@ ENV GROUP_NUM=15
 
 # Cambiamos el título y ejecutamos la aplicación con el script productpage_monolith.py
 CMD sed -i "s/{{ product.title }}/{{ product.title }} ${GROUP_NUM}/g" practica_creativa2/bookinfo/src/productpage/templates/productpage.html && \
-    python3 practica_creativa2/bookinfo/src/productpage/productpage_monolith.py 5080
+    python3 practica_creativa2/bookinfo/src/productpage/productpage.py 5080
