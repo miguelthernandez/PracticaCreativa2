@@ -16,9 +16,9 @@ RUN sed -i s/^requests==.*/requests/ practica_creativa2/bookinfo/src/productpage
 EXPOSE 5080
 
 # Pasa la variable de entorno GROUP_NUMBER al contenedor
-ARG GROUP_NUMBER
-ENV GROUP_NUMBER 15
+ARG GROUP_NUM
+ENV GROUP_NUM 15
 
 # Cambiamos el título y ejecutamos la aplicación con el script productpage_monolith.py
-CMD sed -i "s/{{ product.title }}/{{ product.title }} ${GROUP_NUMBER}/g" practica_creativa2/bookinfo/src/productpage/templates/productpage.html && \
+CMD sed -i "s/{{ product.title }}/{{ product.title }} ${GROUP_NUM}/g" practica_creativa2/bookinfo/src/productpage/templates/productpage.html && \
     python3 practica_creativa2/bookinfo/src/productpage/productpage_monolith.py 5080
