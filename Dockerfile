@@ -9,7 +9,7 @@ RUN apt-get update && \
     apt-get install -y python3-pip
 
 # Instalamos las dependencias de requirements.txt
-RUN sed -i s/^requests==.*/requests/ requirements.txt && \
+RUN sed -i s/^requests==.*/requests/ practica_creativa2/bookinfo/src/productpage/requirements.txt.txt && \
     pip install -r practica_creativa2/bookinfo/src/productpage/requirements.txt
 
 # Expone el puerto 9080 en el contenedor
