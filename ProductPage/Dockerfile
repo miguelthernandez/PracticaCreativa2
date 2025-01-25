@@ -19,8 +19,8 @@ RUN apt-get update -y \
         && pip3 install -r requirements.txt
 
 # Cambiar el título de la app y lanzar app en el puerto 5080
-CMD find ./ -type f -exec sed -i "s/Simple Bookstore App/GRUPO$GROUP_NUMBER/g" {} \; \
-    && python3 practica_creativa2/bookinfo/src/productpage/productpage_monolith.py 5080
+CMD sed -i "s/{{ product.title }}/{{ product.title }} ${GROUP_NUMBER}/g" practica_creativa2/bookinfo/src/productpage/templates/productpage.html && \
+    python3 practica_creativa2/bookinfo/src/productpage/productpage_monolith.py 5080
 
 # Indicar que se ha instalado correctamente
 RUN echo "La imagen Docker de PRODUCT PAGE se ha instalado correctamente"
