@@ -7,7 +7,7 @@ EXPOSE 5080
 ENV GROUP_NUMBER=15
 
 # Cambiar directorio al de home
-WORKDIR /home
+#WORKDIR /home
 
 # Ejecutar comandos de instalación
 RUN apt-get update -y \
