@@ -17,4 +17,4 @@ os.system('sudo docker rmi product-page/g15')
 call(['sudo','docker', 'build', '-t', 'product-page/g15', '.'])
 
 #Inicia un contenedor llamado "g10-product-page" a partir de la imagen "10/product-page"
-os.system('sudo docker run --name product-page-g15 -p 9080:5080 -e GRUPO_NUMERO=10 -d 10/product-page')
+os.system('sudo docker run --name product-page-g15 -p 9080:5080 -e GRUPO_NUMERO=15 -d product-page/g15')
