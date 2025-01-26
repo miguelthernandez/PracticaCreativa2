@@ -11,8 +11,8 @@ ENV SERVICE_VERSION=v1
 EXPOSE 9080
 
 # Copiamos los ficheros ratings.js y package.json al contenedor
-COPY ../practica_creativa2/bookinfo/src/ratings/ratings.js /opt/microservices
-COPY ../practica_creativa2/bookinfo/src/ratings/package.json /opt/microservices
+COPY practica_creativa2/bookinfo/src/ratings/ratings.js /opt/microservices
+COPY practica_creativa2/bookinfo/src/ratings/package.json /opt/microservices
 
 # Instalamos las dependencias definidas en package.json
 RUN npm install
