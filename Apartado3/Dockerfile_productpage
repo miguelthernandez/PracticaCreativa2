@@ -4,8 +4,9 @@ FROM python:3.7.7-slim
 ENV GROUP_NUM=15
 
 # Copiamos el directorio productpage al contenedor e instalamos los requirements
-WORKDIR /practica_creativa2/bookinfo/src/productpage/
-RUN pip install -r requirements.txt
+
+RUN cd practica_creativa2/bookinfo/src/productpage/ \
+    && pip3 install -r requirements.txt
 
 # Añade el numero del grupo al título de la pagina
 RUN sed -i "s/Simple Bookstore App/Grupo ${GROUP_NUM}/g" templates/productpage.html
