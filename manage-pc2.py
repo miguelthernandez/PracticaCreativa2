@@ -1,6 +1,6 @@
 # Importación de módulos para registro y manejo del sistema
 import logging, sys
-# Importación de funciones específicas desde la librería lib_mv
+# Importación de funciones específicas desde la librería lib_vm
 from lib_vm import mv_docker_compose, mv_docker_compose_destroy
 
 def init_log():
