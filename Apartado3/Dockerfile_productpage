@@ -18,3 +18,4 @@ RUN pip3 install --upgrade requests
 # Cambiamos el título y ejecutamos la aplicación con el script productpage_monolith.py
 WORKDIR /practica_creativa2/bookinfo/src/productpage
 CMD ["python3", "productpage.py", "9080"]
+
