@@ -1,0 +1,45 @@
+version: '3'
+services:
+  productpage:
+    build:
+      context: .
+      dockerfile: Apartado3/Dockerfile_productpage
+    image: "productpage/15"
+    container_name: "productpage-15"
+    ports: 
+      - "9080:9080"
+    environment:
+      - GROUP_NUM=15
+
+  details:
+    build:
+      context: .
+      dockerfile: Apartado3/Dockerfile_details
+    image: "details/15"
+    container_name: "details-15"
+    environment:
+      ENABLE_EXTERNAL_BOOK_SERVIC: "true"
+      SERVICE_VERSION: v1
+
+  reviews:
+    build:
+      context: practica_creativa2/bookinfo/src/reviews/reviews-wlpcfg
+    image: reviews/15
+    container_name: reviews-15
+    ports:
+      - '9080'
+    environment:
+      - ENABLE_RATINGS=true
+      - STAR_COLOR=red
+      - SERVICE_VERSION=v1
+    volumes:
+      - reviews-vol:/home/miguel_tenedor8/PracticaCreativa2/volumes/reviews
+  ratings:
+    build:
+      context: .
+      dockerfile: Apartado3/Dockerfile_ratings
+    image: "ratings/15"
+    container_name: "ratings-15"
+    environment:
+      SERVICE_VERSION: v1
+
