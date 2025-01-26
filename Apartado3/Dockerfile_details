@@ -13,5 +13,4 @@ ENV ENABLE_EXTERNAL_BOOK_SERVICE=true
 EXPOSE 9080
 
 # Ejecutar el fichero details.rb usando la instrucción ruby 
-CMD ruby /opt/microservices/details.rb 9080
-
+CMD ["ruby", "details.rb", "9080"]
