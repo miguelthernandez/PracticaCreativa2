@@ -1,19 +1,21 @@
-# Utilizamos la imagen de Python3
+# Usamos la imagen base de Python 3.7.7 slim
 FROM python:3.7.7-slim
 
-ENV GROUP_NUM=15
-
-WORKDIR /app
+# Añade el numero del grupo al título de la pagina
+RUN sed -i "s/Simple Bookstore App/Grupo ${GROUP_NUM}/g" templates/productpage.html
 
 # Copiamos el directorio productpage al contenedor e instalamos los requirements
 COPY practica_creativa2/bookinfo/src/productpage/ /app
 RUN pip install -r requirements.txt 
 
-# Añade el numero del grupo al título de la pagina
-RUN sed -i "s/Simple Bookstore App/Grupo ${GROUP_NUM}/g" templates/productpage.html
-
-# Indica el puerto accesible
-EXPOSE 9080
-
-# Ejecutamos la aplicación 
+# Ejecutamos la aplicación
 CMD ["python3", "productpage.py", "9080"]
+
+# Definir la variable de entorno GROUP_NUM (se pasará al ejecutar el contenedor)
+ENV GROUP_NUM=15
+
+# Establecer el directorio de trabajo dentro del contenedor
+WORKDIR /app
+
+# Exponemos el puerto 9080 para que la aplicación sea accesible
+EXPOSE 9080

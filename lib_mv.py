@@ -5,7 +5,7 @@ import logging, subprocess, os, shutil
 log = logging.getLogger('manage-pc2')
 
 # Eliminar todas las imágenes y contenedores Docker
-def docker_destroy():
+def mv_docker_compose_destroy():
   subprocess.call(['sudo docker stop details-15 productpage-15 ratings-15 reviews-15'], shell=True)
   subprocess.call(['sudo docker rm details-15 productpage-15 ratings-15 reviews-15'], shell=True)
   #subprocess.call(['sudo docker rmi --force $(sudo docker images -q)'], shell=True)

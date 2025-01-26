@@ -1,17 +1,18 @@
+# Usamos una imagen base de Ruby 2.7.1 slim
 FROM ruby:2.7.1-slim
 
-# Establecemos el directorio de trabajo
-WORKDIR /opt/microservices
-
-# Variables de entorno
-ENV SERVICE_VERSION=v1
-ENV ENABLE_EXTERNAL_BOOK_SERVICE=true
-
-# Copiamos el archivo details.rb al contenedor
-COPY practica_creativa2/bookinfo/src/details/details.rb /opt/microservices
-
-# Indica el puerto accesible
+# Exponemos el puerto 9080 para que la aplicación sea accesible
 EXPOSE 9080
 
-# Ejecutamos la aplicación en el puerto 9080
+# Copiamos el archivo details.rb desde el sistema local al contenedor
+COPY practica_creativa2/bookinfo/src/details/details.rb /opt/microservices
+
+# Comando para ejecutar la aplicación Ruby en el puerto 9080
 CMD ["ruby", "details.rb", "9080"]
+
+# Establecemos el directorio de trabajo dentro del contenedor
+WORKDIR /opt/microservices
+
+# Definimos variables de entorno necesarias para la aplicación
+ENV SERVICE_VERSION=v1
+ENV ENABLE_EXTERNAL_BOOK_SERVICE=true

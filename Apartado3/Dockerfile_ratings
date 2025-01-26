@@ -1,13 +1,7 @@
-# Utilizamos la imagen base de Node.js versión 12.18.1 slim
+# Usamos una imagen base de Ruby 2.7.1 slim
 FROM ruby:2.7.1-slim
 
-# Establecemos el directorio de trabajo
-WORKDIR /opt/microservices
-
-# Variable de entorno
-ENV SERVICE_VERSION=v1
-
-# Indica el puerto accesible
+# Exponemos el puerto 9080 para que la aplicación sea accesible
 EXPOSE 9080
 
 # Copiamos los ficheros ratings.js y package.json al contenedor
@@ -17,5 +11,11 @@ COPY practica_creativa2/bookinfo/src/ratings/package.json /opt/microservices
 # Instalamos las dependencias definidas en package.json
 RUN npm install
 
-# Ejecutamos la aplicación 
+# Comando para ejecutar la aplicación Node.js en el puerto 9080
 CMD ["node", "ratings.js", "9080"]
+
+# Establecemos el directorio de trabajo dentro del contenedor
+WORKDIR /opt/microservices
+
+# Definimos variables de entorno necesarias para la aplicación
+ENV SERVICE_VERSION=v1
