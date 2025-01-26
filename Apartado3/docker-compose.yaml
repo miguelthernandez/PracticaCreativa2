@@ -1,57 +1,35 @@
-version: '3.3'
+version: '3'
+
 services:
   productpage:
     build:
       context: .
-      dockerfile: productpage_dockerfile
-    image: productpage/15
-    container_name: productpage-15
-    ports: 
-      - '9080:9080'
+      dockerfile: ProductPage/Dockerfile
     environment:
-      - GROUP_NUMBER=15
-    volumes:
-      - productpage-vol:/home/miguel_tenedor8/PracticaCreativa2/volumes/productpage
+      GROUP_NUM: g15
+    ports:
+      - "9080:9080"
+    container_name: "product-page-g15"
+    image: "product-page/g15"
+  
   details:
     build:
       context: .
-      dockerfile: details_dockerfile
-    image: details/15
-    container_name: details-15
-    ports:
-      - '9080'
+      dockerfile: Details/Dockerfile
     environment:
-      - ENABLE_EXTERNAL_BOOK_SERVICE=true
-      - SERVICE_VERSION=v1
-    volumes:
-      - details-vol:/home/miguel_tenedor8/PracticaCreativa2/volumes/details  
-  reviews:
-    build:
-      context: practica_creativa2/bookinfo/src/reviews/reviews-wlpcfg
-    image: reviews/15
-    container_name: reviews-15
-    ports:
-      - '9080'
-    environment:
-      - ENABLE_RATINGS=true
-      - STAR_COLOR=red
-      - SERVICE_VERSION=v1
-    volumes:
-      - reviews-vol:/home/miguel_tenedor8/PracticaCreativa2/volumes/reviews
+      SERVICE_VERSION: v1
+      ENABLE_EXTERNAL_BOOK_SERVICE: "true"
+    container_name: "details-g15"
+    image: "details/g15"
+  
   ratings:
     build:
       context: .
-      dockerfile: ratings_dockerfile
-    image: ratings/15
-    container_name: ratings-15
-    ports:
-      - '9080'
+      dockerfile: Ratings/Dockerfile
     environment:
-      - SERVICE_VERSION=v1
-    volumes:
-      - ratings-vol:/home/miguel_tenedor8/PracticaCreativa2/volumes/ratings
-volumes:
- productpage-vol:
- details-vol:
- reviews-vol:
- ratings-vol:
+      SERVICE_VERSION: v1
+    container_name: "ratings-g15"
+    image: "ratings/g15"
+
+  
+ 
