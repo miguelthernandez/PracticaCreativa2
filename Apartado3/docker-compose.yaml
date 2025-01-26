@@ -4,20 +4,20 @@ services:
     build:
       context: .
       dockerfile: productpage_dockerfile
-    image: productpage/16
-    container_name: productpage-16
+    image: productpage/15
+    container_name: productpage-15
     ports: 
       - '9080:9080'
     environment:
-      - GROUP_NUMBER=16
+      - GROUP_NUMBER=15
     volumes:
       - productpage-vol:/home/miguel_tenedor8/PracticaCreativa2/volumes/productpage
   details:
     build:
       context: .
       dockerfile: details_dockerfile
-    image: details/16
-    container_name: details-16
+    image: details/15
+    container_name: details-15
     ports:
       - '9080'
     environment:
@@ -28,8 +28,8 @@ services:
   reviews:
     build:
       context: practica_creativa2/bookinfo/src/reviews/reviews-wlpcfg
-    image: reviews/16
-    container_name: reviews-16
+    image: reviews/15
+    container_name: reviews-15
     ports:
       - '9080'
     environment:
@@ -42,8 +42,8 @@ services:
     build:
       context: .
       dockerfile: ratings_dockerfile
-    image: ratings/16
-    container_name: ratings-16
+    image: ratings/15
+    container_name: ratings-15
     ports:
       - '9080'
     environment:
