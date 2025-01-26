@@ -1,21 +1,20 @@
-# Dockerfile para ProductPage
+# Utilizamos la imagen de Python3
 FROM python:3.7.7-slim
 
-ENV GROUP_NUM=15
+# Establecemos el directorio de trabajo
+WORKDIR /app
+
+ENV GROUP_NUM=43
+
+# Copiamos el directorio productpage al contenedor e instalamos los requirements
+COPY ../practica_creativa2/bookinfo/src/productpage/ /app
+RUN pip install -r requirements.txt 
+
+# Añade el numero del grupo al título de la pagina
+RUN sed -i "s/Simple Bookstore App/Grupo ${GROUP_NUM}/g" templates/productpage.html
+
+# Indica el puerto accesible
 EXPOSE 9080
 
-# Instalamos dependencias del requirements
-RUN apt-get update
-RUN apt-get install -y git
-RUN git clone https://github.com/CDPS-ETSIT/practica_creativa2.git
-RUN apt-get update
-RUN apt-get install -y python3-pip
-WORKDIR /practica_creativa2/bookinfo/src/productpage
-RUN pip3 install -r requirements.txt
-RUN pip3 install --upgrade requests
-
-
-# Cambiamos el título y ejecutamos la aplicación con el script productpage_monolith.py
-WORKDIR /practica_creativa2/bookinfo/src/productpage
+# Ejecutamos la aplicación 
 CMD ["python3", "productpage.py", "9080"]
-

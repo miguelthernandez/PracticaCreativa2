@@ -1,19 +1,21 @@
-# Dockerfile para Ratings
-FROM node:12.18.1-slim
+# Utilizamos la imagen base de Node.js versión 12.18.1 slim
+FROM node:14
 
-# Exponer el puerto 9080
-EXPOSE 9080
-
-# Especificar la variable de entorno SERVICE_VERSION con valor v1
-ENV SERVICE_VERSION=v1
-
-# Instalar las dependencias
+# Establecemos el directorio de trabajo
 WORKDIR /opt/microservices
 
-# Copiar los ficheros package.json y ratings.js a la ruta /opt/microservices/ dentro del contenedor.
-COPY practica_creativa2/bookinfo/src/ratings/package.json /opt/microservices/
-COPY practica_creativa2/bookinfo/src/ratings/ratings.js /opt/microservices/
+# Variable de entorno
+ENV SERVICE_VERSION=v1
 
+# Indica el puerto accesible
+EXPOSE 9080
+
+# Copiamos los ficheros ratings.js y package.json al contenedor
+COPY ../practica_creativa2/bookinfo/src/ratings/ratings.js /opt/microservices
+COPY ../practica_creativa2/bookinfo/src/ratings/package.json /opt/microservices
+
+# Instalamos las dependencias definidas en package.json
 RUN npm install
-# Ejecutar el fichero ratings.js
-CMD [ "node", "ratings.js", "9080" ]
+
+# Ejecutamos la aplicación 
+CMD ["node", "ratings.js", "9080"]
