@@ -17,8 +17,8 @@ def main():
     print(f"Ejecutando la versión {version}")
 
     # Crear un nuevo docker-compose a partir del base
-    original_file = "docker-compose-base.yml"
-    new_file = "docker-compose.yml"
+    original_file = "docker-compose.yaml"
+    new_file = "docker-compose.yaml"
 
     if os.path.exists(original_file):
         shutil.copy(original_file, new_file)
