@@ -17,14 +17,17 @@ def main():
     print(f"Ejecutando la versión {version}")
 
     # Crear un nuevo docker-compose a partir del base
-    original_file = "docker-compose.yaml"
-    new_file = "docker-compose.yaml"
+    original_file = "docker-compose-base.yml"
+    new_file = "docker-compose.yml"
 
-    if os.path.exists(original_file):
-        shutil.copy(original_file, new_file)
+    if not os.path.exists(new_file):  # Solo copiar si no existe el archivo destino
+        if os.path.exists(original_file):
+            shutil.copy(original_file, new_file)
+        else:
+            print(f"El archivo {original_file} no existe. Asegúrate de que está en el directorio actual.")
+            return
     else:
-        print(f"El archivo {original_file} no existe. Asegúrate de que está en el directorio actual.")
-        return
+        print(f"El archivo {new_file} ya existe. No se copiará de nuevo.")
 
     # Definir las variables en función de la versión
     star_color = "red"
@@ -50,8 +53,8 @@ def main():
 
     # Crear la imagen de Reviews
     os.chdir('practica_creativa2/bookinfo/src/reviews')
-    pwd = os.getcwd()
-    subprocess.call(['docker', 'run', '--rm', '-u', 'root', '-v', f'{pwd}:/home/gradle/project', '-w', '/home/gradle/project', 'gradle:4.8.1', 'gradle', 'clean', 'build'])
+    current_dir = os.getcwd()
+    subprocess.call(['docker', 'run', '--rm', '-u', 'root', '-v', f'{current_dir}:/home/gradle/project', '-w', '/home/gradle/project', 'gradle:4.8.1', 'gradle', 'clean', 'build'])
     subprocess.call(['docker', 'build', '-t', 'reviews/15', './reviews-wlpcfg'])
 
     # Construir y levantar los contenedores con docker-compose
