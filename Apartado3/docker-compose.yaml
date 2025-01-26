@@ -1,48 +1,57 @@
-version: '3'
+version: '3.3'
 services:
   productpage:
     build:
       context: .
       dockerfile: Dockerfile_productpage
+    image: productpage/15
+    container_name: productpage-15
+    ports: 
+      - '9080:9080'
     environment:
-      GROUP_NUMBER: 15
-    ports:
-      - "9080:9080"
-    container_name: "productpage-15"
-    image: "productpage/15"
-
+      - GROUP_NUMBER=15
+    volumes:
+      - productpage-vol:/home/miguel_tenedor8/PracticaCreativa2/volumes/productpage
   details:
     build:
       context: .
       dockerfile: Dockerfile_details
-    environment:
-      SERVICE_VERSION: v1
-      ENABLE_EXTERNAL_BOOK_SERVICE: "true"
+    image: details/15
+    container_name: details-15
     ports:
-      - "9081:9080"  # Cambiado el puerto local para evitar conflictos
-    container_name: "details-15"
-    image: "details/15"
-
+      - '9080'
+    environment:
+      - ENABLE_EXTERNAL_BOOK_SERVICE=true
+      - SERVICE_VERSION=v1
+    volumes:
+      - details-vol:/home/miguel_tenedor8/PracticaCreativa2/volumes/details  
   reviews:
     build:
-      context: practica_creativa2/bookinfo/src/reviews/reviews-wlpcfg   # Usamos el que ya esta creado
-    environment:
-      SERVICE_VERSION: v3
-      ENABLE_RATINGS: "true"
-      STAR_COLOR: red
+      context: practica_creativa2/bookinfo/src/reviews/reviews-wlpcfg
+    image: reviews/15
+    container_name: reviews-15
     ports:
-      - "9082:9080"  # Cambiado el puerto local para evitar conflictos
-    container_name: "reviews-15"
-    image: "reviews/15"
-
+      - '9080'
+    environment:
+      - ENABLE_RATINGS=true
+      - STAR_COLOR=red
+      - SERVICE_VERSION=v1
+    volumes:
+      - reviews-vol:/home/miguel_tenedor8/PracticaCreativa2/volumes/reviews
   ratings:
     build:
       context: .
       dockerfile: Dockerfile_ratings
-    environment:
-      SERVICE_VERSION: v1
+    image: ratings/15
+    container_name: ratings-15
     ports:
-      - "9083:9080"  # Cambiado el puerto local para evitar conflictos
-    container_name: "ratings-15"
-    image: "ratings/15"
-
+      - '9080'
+    environment:
+      - SERVICE_VERSION=v1
+    volumes:
+      - ratings-vol:/home/miguel_tenedor8/PracticaCreativa2/volumes/ratings
+volumes:
+ productpage-vol:
+ details-vol:
+ reviews-vol:
+ ratings-vol:
