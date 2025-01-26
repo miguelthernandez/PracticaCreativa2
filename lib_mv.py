@@ -2,7 +2,7 @@
 
 
 
-import logging, subprocess, os
+import logging, subprocess, os, shutil
 
 log = logging.getLogger('auto_p2')
 
@@ -30,66 +30,53 @@ def docker_destroy():
   #subprocess.call(['sudo docker rmi --force $(sudo docker images -q)'], shell=True)
 
 # Despliegue de la aplicación mediante Docker-Compose
-def mv_docker_compose (version, ratings, star):
-  log.debug("mv_docker_compose ")
-  # Guardar directorio raíz
-  raiz = os.getcwd()
-  # Clonar repositorio de la app
-  subprocess.call(['git', 'clone', 'https://github.com/CDPS-ETSIT/practica_creativa2.git', '/practica_creativa2'])
-  # Crear la imagen de ProductPage
-  log.debug("CONSTRUIR PRODUCT_PAGE")
-  subprocess.call(['sudo', 'docker', 'build', '-t', 'g15/product-page:latest', './ProductPage'])
-  subprocess.call(['sudo', 'docker', 'run', '--name', 'g15-product-page', '-p', '9080', '-d', '-it', 'g15/product-page:latest'])
-  # Crear la imagen de Details
-  log.debug("CONSTRUIR DETAILS")
-  subprocess.call(['sudo', 'docker', 'build', '-t', 'g15/details:latest', './Details'])
-  subprocess.call(['sudo', 'docker', 'run', '--name', 'g15-details', '-p', '9080', '-d', '-it', 'g15/details:latest'])
-  # Crear la imagen de Ratings
-  log.debug("CONSTRUIR RATINGS")
-  subprocess.call(['sudo', 'docker', 'build', '-t', 'g15/ratings:latest', './Ratings'])
-  subprocess.call(['sudo', 'docker', 'run', '--name', 'g15-ratings', '-p', '9080', '-d', '-it', 'g15/ratings:latest'])
-  # Crear la imagen de Reviews
-  log.debug("CONSTRUIR REVIEWS")
-  os.chdir('practica_creativa2/bookinfo/src/reviews')
-  subprocess.call(['sudo', 'docker', 'run', '--rm', '-u', 'root', '-v', '/home/gradle/project', '-w', '/home/gradle/project', 'gradle:4.8.1', 'gradle', 'clean', 'build'])
-  subprocess.call(['sudo', 'docker', 'build', '-t', 'g15/reviews:latest', './reviews-wlpcfg'])
-  subprocess.call(['sudo', 'docker', 'run', '--name', 'g15-reviews', '-p', '9080', '-d', '-it', 'g15/reviews:latest'])
-  
-  # Cambiar al directorio raíz
-  os.chdir(raiz)
-  # Crear el contenido del fichero docker-compose.yaml
-  log.debug("CONSTRUIR DOCKER_COMPOSE")
-  contenido_docker_compose = f"""
-      version: '3'
-      services:
-        g15-productpage:
-          image: "g15/product-page:latest"
-          ports:
-            - 9080:9080
-          environment:
-            - GROUP_NUMBER=15
-        g15-details:
-          image: "g15/details:latest"
-          environment:
-            - SERVICE_VERSION=v1
-            - ENABLE_EXTERNAL_BOOK_SERVICE=true
-        g15-reviews:
-          image: "g15/reviews:latest"
-          environment:
-            - SERVICE_VERSION={version}
-            - ENABLE_RATINGS={ratings}
-            - STAR_COLOR={star}
-        g15-ratings:
-          image: "g15/ratings:latest"
-      """
-  # Escribir el contenido en el fichero docker-compose.yaml
-  with open('docker-compose.yaml', 'w') as file:
-    file.write(contenido_docker_compose)
+def mv_docker_compose ():
+   # Clonar repositorio de la app
+    if not os.path.isdir('practica_creativa2'):
+        subprocess.call(["git", "clone", "https://github.com/CDPS-ETSIT/practica_creativa2.git"])
+    else:
+        print("Repositorio ya clonado")
+    # Escoger la version de la app
+    version = input("Escoge una versión (v1, v2, v3): ").strip()
+    if version not in ["v1", "v2", "v3"]:
+        print("Versión no válida, se elegirá la versión v3 por defecto.")
+        version = "v3"
+    print(f"Ejecutando la versión {version}")
+    # Crea un nuevo docker-compose a partir del base
+    original_file = "docker-compose-base.yml"
+    new_file = f"docker-compose.yml"
+    shutil.copy(original_file, new_file)
 
-  # Crear los contenedores
-  #subprocess.call(['sudo', 'docker-compose', 'up', '-d'])
-  #subprocess.call(['sudo', 'docker-compose', 'build'])
-  subprocess.call(['sudo', 'docker-compose', 'up'])
+    # Define las variables en función de la versión
+    star_color = "red"
+    enable_ratings = "true"
+    if version == "v1":
+        enable_ratings = "false"
+    elif version == "v2":
+        star_color = "black"
+
+    # Añadir el servicio de reviews al docker-compose
+    reviews_service = f"""
+  reviews:
+    environment:
+        SERVICE_VERSION: {version}
+        ENABLE_RATINGS: "{enable_ratings}"
+        STAR_COLOR: {star_color}
+    container_name: \"reviews-15\"
+    image: \"reviews/15\"
+    """
+    with open(new_file, "a") as file:
+        file.write(reviews_service)
+
+    # Crear la imagen de Reviews, ejecutando antes el comando requerido
+    os.chdir('practica_creativa2/bookinfo/src/reviews')
+    dir = os.getcwd()
+    subprocess.call(['docker', 'run', '--rm', '-u', 'root', '-v', f'{dir}:/home/gradle/project', '-w', '/home/gradle/project', 'gradle:4.8.1', 'gradle', 'clean', 'build'])
+    subprocess.call(['docker', 'build', '-t', 'reviews/15', './reviews-wlpcfg'])
+
+    # Construir y levantar los contenedores con docker-compose
+    subprocess.call([f'docker-compose', 'build'])
+    subprocess.call([f'docker-compose', 'up', '-d'])
 
 def config_cluster(cluster):
   # Configurar el cluster
