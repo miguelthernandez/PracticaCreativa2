@@ -6,7 +6,7 @@ ENV GROUP_NUM=15
 WORKDIR /app
 
 # Copiamos el directorio productpage al contenedor e instalamos los requirements
-COPY ../practica_creativa2/bookinfo/src/productpage/ /app
+COPY practica_creativa2/bookinfo/src/productpage/ /app
 RUN pip install -r requirements.txt 
 
 # Añade el numero del grupo al título de la pagina
