@@ -4,7 +4,7 @@ FROM python:3.7.7-slim
 # Establecemos el directorio de trabajo
 WORKDIR /app
 
-ENV GROUP_NUM=43
+ENV GROUP_NUM=15
 
 # Copiamos el directorio productpage al contenedor e instalamos los requirements
 COPY ../practica_creativa2/bookinfo/src/productpage/ /app
