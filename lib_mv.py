@@ -1,32 +1,13 @@
 #!/usr/bin/python3
 
-
-
 import logging, subprocess, os, shutil
 
-log = logging.getLogger('auto_p2')
-
-# Despliegue de la aplicación en máquina virtual pesada
-def mv_pesada (puerto):
-  log.debug("mv_pesada ")
-  subprocess.call(['git', 'clone', 'https://github.com/CDPS-ETSIT/practica_creativa2.git'])
-  subprocess.run(['find', './', '-type', 'f', '-exec', 'sed', '-i', f's/Simple Bookstore App/GRUPO15/g', '{{}}', '\;'])
-  os.chdir('practica_creativa2/bookinfo/src/productpage')
-  subprocess.call(["sed", "-i", "s/^requests==.*/requests/", "requirements.txt"])
-  subprocess.call(['pip3', 'install', '-r', 'requirements.txt'])
-  subprocess.call(['sudo', 'apt', 'upgrade', 'requests'])
-  subprocess.call(['python3', 'productpage_monolith.py', f'{puerto}'])
-
-# Despliegue de la aplicación mediante Docker
-def mv_docker ():
-  log.debug("mv_docker ")
-  subprocess.call(['sudo', 'docker', 'build', '-t', 'product-page/g15', '.'])
-  subprocess.call(['sudo', 'docker', 'run', '--name', 'product-page-g15', '-p', '9080:5080', '-e', 'GROUP_NUM=15', '-d', 'product-page/g15'])
+log = logging.getLogger('manage-pc2')
 
 # Eliminar todas las imágenes y contenedores Docker
 def docker_destroy():
-  subprocess.call(['sudo docker stop product-page-g15'], shell=True)
-  subprocess.call(['sudo docker rm product-page-g15'], shell=True)
+  subprocess.call(['sudo docker stop details-15 productpage-15 ratings-15 reviews-15'], shell=True)
+  subprocess.call(['sudo docker rm details-15 productpage-15 ratings-15 reviews-15'], shell=True)
   #subprocess.call(['sudo docker rmi --force $(sudo docker images -q)'], shell=True)
 
 # Despliegue de la aplicación mediante Docker-Compose
@@ -84,28 +65,3 @@ def mv_docker_compose():
     # Construir y levantar los contenedores con docker-compose
     subprocess.call(['docker-compose', 'build'])
     subprocess.call(['docker-compose', 'up', '-d'])
-
-def config_cluster(cluster):
-  # Configurar el cluster
-  subprocess.call(['gcloud', 'container', 'clusters', 'resize', f'{cluster}', '--num-nodes=5', '--zone=europe-southwest1'])
-  subprocess.call(['gcloud', 'container', 'clusters', 'update', f'{cluster}', '--no-enable-autoscaling', '--zone=europe-southwest1'])
-  subprocess.call(['gcloud', 'auth', 'configure-docker', '-q'])
-
-def mv_kubernetes(version):
-  log.debug("mv_kubernetes ")
-  # Desplegar el escenario
-  subprocess.call(['kubectl', 'apply', '-f', f'./deployment-{version}.yaml'])
-  # Mostrar información de los pods y los services
-  subprocess.call(['kubectl', 'get', 'pods'])
-  subprocess.call(['kubectl', 'get', 'services'])
-
-def destroy_cluster():
-  # Destruir el escenario de la parte 4
-  subprocess.call(['kubectl', 'delete', '--all', 'pods'])
-  subprocess.call(['kubectl', 'delete', '--all', 'deployments'])
-  subprocess.call(['kubectl', 'delete', '--all', 'services'])
-
-def info_cluster():
-  # Mostrar información de los pods y los services
-  subprocess.call(['kubectl', 'get', 'pods'])
-  subprocess.call(['kubectl', 'get', 'services'])

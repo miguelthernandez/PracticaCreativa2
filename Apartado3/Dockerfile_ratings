@@ -1,5 +1,5 @@
 # Utilizamos la imagen base de Node.js versión 12.18.1 slim
-FROM node:14
+FROM ruby:2.7.1-slim
 
 # Establecemos el directorio de trabajo
 WORKDIR /opt/microservices
