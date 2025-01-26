@@ -1,5 +1,5 @@
 import logging, sys, os
-from lib_mv import init_app_docker_compose, mv_pesada, mv_docker, mv_docker_compose, mv_kubernetes, destroy_cluster, config_cluster, docker_destroy, info_cluster
+from lib_mv import init_app_docker_compose, mv_pesada, mv_docker, init_app_docker_compose, mv_kubernetes, destroy_cluster, config_cluster, docker_destroy, info_cluster
 
 def init_log():
     # Creacion y configuracion del logger
