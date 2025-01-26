@@ -1,5 +1,5 @@
 import logging, sys, os
-from lib_mv import init_app_docker_compose, mv_pesada, mv_docker, init_app_docker_compose, mv_kubernetes, destroy_cluster, config_cluster, docker_destroy, info_cluster
+from lib_mv import mv_pesada, mv_docker, mv_docker_compose, mv_kubernetes, destroy_cluster, config_cluster, docker_destroy, info_cluster
 
 def init_log():
     # Creacion y configuracion del logger
@@ -33,13 +33,16 @@ def main():
     #python3 auto-pc2.py parte2 destruir
 
     elif orden == "parte3":
-        order2 = sys.argv[2]
-        if order2 == "start":
-            print("Despliegue de la aplicación multiservicio mediante docker-compose")
-            init_app_docker_compose()
-        elif order2 == "destroy":
-            print("Eliminación de todas las imágenes y contenedores Docker")
-            docker_destroy()
+        if sys.argv[2] != "destruir":
+            version = sys.argv[2]
+            if version == "v1":
+                mv_docker_compose("v1", False, "black")
+            elif version == "v2":
+                mv_docker_compose("v2", True, "black")
+            else:
+                mv_docker_compose("v3", True, "red")
+        else:
+                docker_destroy()
     #python3 auto-pc2.py parte3 v1
     #python3 auto-pc2.py parte3 v2
     #python3 auto-pc2.py parte3 v3
