@@ -1,4 +1,4 @@
-import os
+import os, sys
 import subprocess
 
 # Clone the repository
@@ -20,14 +20,9 @@ subprocess.run(["sed", "-i", "s/^requests==.*/requests/", "requirements.txt"], c
 # Install the required Python packages
 subprocess.run(['pip3', 'install', '-r', 'requirements.txt'], check=True)
 
-# Define the port for the application
-puerto = 9080  # Replace with the desired port if needed
+orden = sys.argv[1]
 
-# Run the Python script for the product page
-subprocess.run(['python3', 'productpage_monolith.py', str(puerto)], check=True)
-
-# Define the port for the application
-puerto1 = 9090  # Replace with the desired port if needed
-
-# Run the Python script for the product page
-subprocess.run(['python3', 'productpage_monolith.py', str(puerto1)], check=True)
+if orden == "9080":
+    subprocess.run(['python3', 'productpage_monolith.py', str(orden)], check=True)
+else:
+    subprocess.run(['python3', 'productpage_monolith.py', str(orden)], check=True)
