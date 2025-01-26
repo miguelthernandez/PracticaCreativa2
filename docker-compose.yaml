@@ -21,19 +21,6 @@ services:
       ENABLE_EXTERNAL_BOOK_SERVIC: "true"
       SERVICE_VERSION: v1
 
-  reviews:
-    build:
-      context: practica_creativa2/bookinfo/src/reviews/reviews-wlpcfg
-    image: reviews/15
-    container_name: reviews-15
-    ports:
-      - '9080'
-    environment:
-      - ENABLE_RATINGS=true
-      - STAR_COLOR=red
-      - SERVICE_VERSION=v1
-    volumes:
-      - reviews-vol:/home/miguel_tenedor8/PracticaCreativa2/volumes/reviews
   ratings:
     build:
       context: .
