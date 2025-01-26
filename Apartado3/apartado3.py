@@ -1,6 +1,5 @@
 import os
 import subprocess
-import shutil
 
 def main():
     # Clonar repositorio de la app
@@ -16,19 +15,6 @@ def main():
         version = "v3"
     print(f"Ejecutando la versión {version}")
 
-    # Crear un nuevo docker-compose a partir del base
-    original_file = "docker-compose-base.yml"
-    new_file = "docker-compose.yml"
-
-    if not os.path.exists(new_file):  # Solo copiar si no existe el archivo destino
-        if os.path.exists(original_file):
-            shutil.copy(original_file, new_file)
-        else:
-            print(f"El archivo {original_file} no existe. Asegúrate de que está en el directorio actual.")
-            return
-    else:
-        print(f"El archivo {new_file} ya existe. No se copiará de nuevo.")
-
     # Definir las variables en función de la versión
     star_color = "red"
     enable_ratings = "true"
@@ -37,19 +23,37 @@ def main():
     elif version == "v2":
         star_color = "black"
 
-    # Añadir el servicio de reviews al docker-compose
+    # Archivo docker-compose.yml
+    new_file = "docker-compose.yaml"
+
+    # Verificar si el servicio reviews ya está configurado
+    with open(new_file, "r") as file:
+        content = file.read()
+        if "reviews:" in content:
+            print("El servicio 'reviews' ya está configurado en docker-compose.yaml. No se realizarán cambios.")
+            return
+
+    # Bloque del servicio reviews
     reviews_service = f"""
   reviews:
+    build:
+      context: ./practica_creativa2/bookinfo/src/reviews
+      dockerfile: Dockerfile_reviews
     environment:
-        SERVICE_VERSION: {version}
-        ENABLE_RATINGS: "{enable_ratings}"
-        STAR_COLOR: {star_color}
+      SERVICE_VERSION: {version}
+      ENABLE_RATINGS: "{enable_ratings}"
+      STAR_COLOR: {star_color}
+    ports:
+      - "9084:9080"
     container_name: "reviews-15"
     image: "reviews/15"
     """
 
+    # Añadir el bloque de configuración al archivo existente
     with open(new_file, "a") as file:
         file.write(reviews_service)
+
+    print("Servicio 'reviews' añadido a docker-compose.yaml.")
 
     # Crear la imagen de Reviews
     os.chdir('practica_creativa2/bookinfo/src/reviews')
